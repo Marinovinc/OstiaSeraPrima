@@ -219,6 +219,17 @@ ul{margin:10px 0;padding-left:22px} li{margin:5px 0}
     open(os.path.join(REPO,"index.html"),"w",encoding="utf-8").write(html)
     open(os.path.join(REPO,f"report_{date}.html"),"w",encoding="utf-8").write(html)
 
+    # COPIA AUTONOMA (offline: rimuove i font CDN -> nessuna risorsa esterna). Salvata FUORI dal repo
+    # cosi' NON viene pubblicata su GitHub: e' un file locale da portare in barca offline.
+    try:
+        auton = re.sub(r'<link[^>]*fonts\.g[^>]*>','',html)
+        ext_dir = r"D:/claude_handoff/outbox/Roma_pesca_campionato_2026"
+        if os.path.isdir(ext_dir):
+            open(os.path.join(ext_dir,"REPORT_sera_prima_autonomo.html"),"w",encoding="utf-8").write(auton)
+            print("AUTONOMO salvato (locale, non su GitHub):", os.path.join(ext_dir,"REPORT_sera_prima_autonomo.html"))
+    except Exception as e:
+        print("autonomo:", e)
+
     # PUBLISH
     try:
         subprocess.run(["git","-C",REPO,"add","-A"],check=True,timeout=60)
