@@ -2,7 +2,7 @@
 """Costruisce il DOSSIER TATTICO completo (tutti i contenuti) in HTML nello
 standard template_briefing.html, autoportante (immagini base64), e lo pubblica.
 Output: dossier.html nel repo OstiaSeraPrima."""
-import os, base64, subprocess
+import os, base64, subprocess, re
 REPO = os.path.dirname(os.path.abspath(__file__))
 SRC  = "D:/claude_handoff/outbox/Roma_pesca_campionato_2026/"
 
@@ -139,17 +139,51 @@ BODY = """</head><body><div class="wrap">
  <div class="call info"><span class="lab">Area</span>Primaria: la <b>scarpata profonda</b> (zona 21/6) + le secche W (banco &minus;687 m). Da <b>ritarare la sera prima</b> col dato fresco (sez. VII).</div>
 </section>
 
-<section id="s5"><div class="sec-head"><span class="sec-num">V</span><h2>Le rotte (A / B / C)</h2></div>
- <p class="lead"><span class="drop">T</span>re rotte, tutti i waypoint <b>verificati dentro il campo</b>. Assegnabili alle 3 barche del club (ferrate condivise via radio). GPX: <span class="num">ROTTE_OSTIA_2026.gpx</span>.</p>
- <p><b>Rotta A &mdash; scarpata 21/6 (primaria)</b>, sulla linea rossa, 700&ndash;900 m. Tratto migliore A2&ndash;A4.</p>
+<section id="s5"><div class="sec-head"><span class="sec-num">V</span><h2>Le rotte</h2></div>
+ <p class="lead"><span class="drop">T</span>re rotte, tutti i waypoint <b>verificati dentro il campo</b>. Assegnabili alle <b>3 barche del club</b> (A/B/C), con ferrate condivise via radio. GPX da caricare sul plotter: <span class="num">ROTTE_OSTIA_2026.gpx</span>.</p>
+ __FIG_ROTTE__
+
+ <div class="sec-head" style="margin-top:26px;border-bottom-width:1px"><span class="sec-num" style="font-size:1.15rem">A</span><h2 style="font-size:1.2rem">Scarpata 21/6 <span class="tag b">primaria</span></h2></div>
+ <p>Transetto sulla <b>linea rossa georeferenziata e validata</b>: scende la scarpata dove si &egrave; pescato il 21/6, tagliando le quote da ~590 a ~900 m, l&rsquo;orlo dove i pelagici seguono il foraggio sul break.</p>
+ <ul>
+  <li><b>Quando:</b> prima scelta; soprattutto a <b>segnale debole</b> (struttura dominante) o per restare sull&rsquo;acqua provata.</li>
+  <li><b>Target:</b> alalunga / tunnidi (600) sul tratto <b>A2&ndash;A4 (700&ndash;830 m)</b>; tonno rosso (1200) sulla canna profonda; spada nel profondo. A1 = approccio/cala spread, A5 = orlo profondo.</li>
+  <li><b>Tecnica:</b> stop-and-go sull&rsquo;orlo, zigzag sui due lati della scarpata.</li>
+ </ul>
  <table><tr><th>WP</th><th>Lat</th><th>Lon</th><th>Fondale</th></tr>
   <tr><td>A1</td><td class="num">N 41 40.200'</td><td class="num">E 011 58.560'</td><td>593 m (approccio)</td></tr>
   <tr><td>A2</td><td class="num">N 41 39.354'</td><td class="num">E 011 57.762'</td><td>696 m (zona 21/6)</td></tr>
   <tr><td>A3</td><td class="num">N 41 38.598'</td><td class="num">E 011 57.006'</td><td>788 m</td></tr>
   <tr><td>A4</td><td class="num">N 41 38.100'</td><td class="num">E 011 56.508'</td><td>829 m</td></tr>
   <tr><td>A5</td><td class="num">N 41 36.726'</td><td class="num">E 011 55.128'</td><td>904 m</td></tr></table>
- <p><b>Rotta B &mdash; banco &minus;687 m + dorsali W</b> (vere secche): B2 41.5642/11.8540, + dorsali ~700 m. <b>Rotta C &mdash; transetto ampio</b> (scarpata + banco).</p>
- __FIG_ROTTE__
+
+ <div class="sec-head" style="margin-top:26px;border-bottom-width:1px"><span class="sec-num" style="font-size:1.15rem">B</span><h2 style="font-size:1.2rem">Banco &minus;687 m + dorsali W</h2></div>
+ <p>Le <b>vere strutture</b> del settore W del campo (banco e dorsali a ~700 m): per <b>aggregazione</b> [R1, Weber 2025] concentrano i predatori. Si lavorano gli <b>orli</b> di banco e dorsali.</p>
+ <ul>
+  <li><b>Quando:</b> quando banco/dorsali sono pi&ugrave; vicini alla <b>macchia fredda/fronte del giorno</b>, o per cercare il pezzo grosso sulla struttura netta.</li>
+  <li><b>Target:</b> tonno rosso (1200) e alalunga sugli orli; spada nel profondo adiacente (B1 &minus;935 m).</li>
+  <li><b>Tecnica:</b> passate ravvicinate sugli orli del banco, stop-and-go.</li>
+ </ul>
+ <table><tr><th>WP</th><th>Lat</th><th>Lon</th><th>Fondale</th></tr>
+  <tr><td>B1</td><td class="num">N 41 35.100'</td><td class="num">E 011 51.720'</td><td>935 m (approccio)</td></tr>
+  <tr><td>B2</td><td class="num">N 41 33.852'</td><td class="num">E 011 51.240'</td><td>687 m (banco)</td></tr>
+  <tr><td>B3</td><td class="num">N 41 35.520'</td><td class="num">E 011 50.160'</td><td>705 m</td></tr>
+  <tr><td>B4</td><td class="num">N 41 37.020'</td><td class="num">E 011 50.280'</td><td>700 m</td></tr>
+  <tr><td>B5</td><td class="num">N 41 38.220'</td><td class="num">E 011 49.800'</td><td>700 m</td></tr></table>
+
+ <div class="sec-head" style="margin-top:26px;border-bottom-width:1px"><span class="sec-num" style="font-size:1.15rem">C</span><h2 style="font-size:1.2rem">Transetto ampio</h2></div>
+ <p>Copre <b>scarpata (NE) e banco (SW)</b> in un transetto diagonale: per la barca che vuole <b>leggere tutto il campo</b> in una passata.</p>
+ <ul>
+  <li><b>Quando:</b> giornata di <b>ricerca</b>, quando non sai dove sia il pesce, o come manche d&rsquo;esplorazione.</li>
+  <li><b>Target:</b> spread completo, copri tutta la colonna.</li>
+  <li><b>Nota:</b> <b>C4 (&minus;1063 m) &egrave; solo transito</b> (fondo piatto, non in pesca): attraversi la fossa per passare da scarpata a banco.</li>
+ </ul>
+ <table><tr><th>WP</th><th>Lat</th><th>Lon</th><th>Fondale</th></tr>
+  <tr><td>C1</td><td class="num">N 41 40.200'</td><td class="num">E 011 58.560'</td><td>593 m</td></tr>
+  <tr><td>C2</td><td class="num">N 41 38.598'</td><td class="num">E 011 57.006'</td><td>788 m (zona 21/6)</td></tr>
+  <tr><td>C3</td><td class="num">N 41 37.200'</td><td class="num">E 011 54.300'</td><td>931 m</td></tr>
+  <tr><td>C4</td><td class="num">N 41 35.400'</td><td class="num">E 011 52.320'</td><td>1063 m (transito)</td></tr>
+  <tr><td>C5</td><td class="num">N 41 33.852'</td><td class="num">E 011 51.240'</td><td>687 m (banco)</td></tr></table>
 </section>
 
 <section id="s6"><div class="sec-head"><span class="sec-num">VI</span><h2>Come: spread & tecnica</h2></div>
@@ -191,6 +225,14 @@ body = (BODY
 html = HEAD + CSS + body
 open(os.path.join(REPO,"dossier.html"),"w",encoding="utf-8").write(html)
 print("dossier.html scritto (%d KB)" % (len(html)//1024))
+# copia AUTONOMA (offline, no font CDN) fuori dal repo -> NON pubblicata su GitHub
+try:
+    auton = re.sub(r'<link[^>]*fonts\.g[^>]*>','',html)
+    if os.path.isdir(SRC):
+        open(os.path.join(SRC,"DOSSIER_OSTIA_2026_autonomo.html"),"w",encoding="utf-8").write(auton)
+        print("DOSSIER autonomo salvato (locale):", os.path.join(SRC,"DOSSIER_OSTIA_2026_autonomo.html"))
+except Exception as e:
+    print("autonomo:", e)
 try:
     subprocess.run(["git","-C",REPO,"add","dossier.html","build_dossier.py"],check=True,timeout=60)
     subprocess.run(["git","-C",REPO,"commit","-q","-m","dossier completo (template)"],check=True,timeout=60)
