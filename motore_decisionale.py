@@ -44,6 +44,13 @@ RIFERIMENTI = [
  ("fishingboatmagazine.it - 'Il Big Game sbarca a Roma' (2026, 25-28/6, Ostia): specie target evidenziate "
   "aguglie imperiali e lampughe; Catch & Release",
   "https://www.fishingboatmagazine.it/il-big-game-sbarca-a-roma/"),
+ # [R6] Alalunga nel Tirreno: estate, fondali redditizi 500-2000 m, traina 6-9 kn, secche di Tor Paterno.
+ ("obiettivopesca.org / nauticareport - alalunga Tirreno: estate, fondali 500-2000 m, traina 6-9 kn",
+  "https://obiettivopesca.org/home.php?id_pagina_statica=232"),
+ # [R7] Esca VERIFICATA + indicatore uccelli (report rivista BigGame, area Adriatica ma specie/tecnica trasferibili).
+ ("BigGame.it - report traina alalunga: esca = minnow Rapala 13 cm + piumette piombate; "
+  "indicatore = uccelli ai bordi delle mangianze + salti",
+  "http://www.biggame.it/fishing/tonno-alalunga/traina-tonno-alalunga-04a.htm"),
  # [NON verificata direttamente: 403] specie Ostia 2025 (tonno rosso/striato/aguglia/lampuga/spada, 6 catture):
  #   proveniente da snippet di ricerca di alassionews.it, NON letto direttamente -> trattare come indicativo.
 ]
@@ -96,14 +103,18 @@ def deriva_strategia(chl_med, front_grad_km, cool_anom_C, cur_kn, cloud_pct, ora
     else:
         col += " ACQUA LIMPIDA: non esiste una regola di colore verificata -> scelta per esperienza/test in mare."
     S["colore"] = (f"Acqua {chiaro}. {col} "
-                   "NB: 'minnow 5 cm + bianco/viola' del 21/6 e' un ANEDDOTO non verificato (riferito da terzi): "
-                   "spunto, NON regola da assumere.")
+                   "Esca con base VERIFICATA per l'alalunga [R7]: minnow Rapala ~13 cm (3 ancorette) + piumette piombate. "
+                   "NB: 'minnow 5 cm + bianco/viola' del 21/6 e' un ANEDDOTO non verificato (riferito da terzi): spunto, NON regola.")
 
     # --- SPECIE / SPREAD: dalla colonna (calibrato anche su Ostia 2025) ---
     S["specie"] = ("Copri la COLONNA. Specie target VERIFICATE per l'evento Ostia (fonte 2026): "
                    "aguglia imperiale e lampuga [R5]. Indicative (Ostia 2025, da snippet NON letto direttamente): "
                    "anche tonno rosso, striato, spada. Spread di superficie (aguglia/lampuga/tunnidi/alalunga, 600) "
-                   "+ 1-2 canne profonde (tonno rosso 1200, spada 600). Oggetti galleggianti/linee di alga -> LAMPUGA.")
+                   "+ 1-2 canne profonde (tonno rosso 1200, spada 600). Oggetti galleggianti/linee di alga -> LAMPUGA. "
+                   "Alalunga: acqua PROFONDA 500-2000 m, traina 6-9 kn [R6].")
+
+    S["segni"] = ("Segni REALI che battono la mappa [R7]: UCCELLI ai bordi delle mangianze + salti = branchi in caccia "
+                  "sul foraggio -> molla il piano e converge (rispettando i 370 m). Il pesce che mangia batte qualsiasi soglia.")
 
     S["riferimenti"] = RIFERIMENTI
     return S

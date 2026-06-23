@@ -129,7 +129,7 @@ def run():
                     if _g>_grad: _grad=_g
         _anom=(coolest[0]-sst_med) if (coolest[0] is not None and sst_med is not None) else None
         strat=deriva_strategia(chl_med, _grad, _anom, (cur[0] if cur else None), None, "mattino", sst_med)
-        strat_html=("".join(f'<p><b>{k}:</b> {strat[k.lower()]}</p>' for k in ("DOVE","QUOTA","COLORE","SPECIE")))
+        strat_html=("".join(f'<p><b>{k}:</b> {strat[k.lower()]}</p>' for k in ("DOVE","QUOTA","COLORE","SPECIE","SEGNI")))
         refs="".join(f'<li><a href="{u}">{t}</a></li>' for t,u in RIFERIMENTI)
         strat_html+=f'<div class="call"><span class="lab">Riferimenti verificati</span><ul>{refs}</ul></div>'
     except Exception as e:
