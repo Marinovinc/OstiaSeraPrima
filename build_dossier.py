@@ -17,6 +17,7 @@ IM_PROF   = img64("PROFILO_3D_zona_21-06.png")
 IM_RA     = img64("ROTTA_A_mappa.png")
 IM_RB     = img64("ROTTA_B_mappa.png")
 IM_RC     = img64("ROTTA_C_mappa.png")
+IM_ESCHE  = img64("esche_proposte.png")
 
 CSS = """<style>
 :root{--paper:#F1ECDE;--paper-2:#FAF6E8;--paper-3:#ECE5D2;--ink:#181715;--ink-2:#4A4842;--ink-3:#7F7C73;--rule:#C9BFA8;--navy:#0E2A40;--navy-2:#1F4660;--sea:#2D6E5F;--brass:#9C6D14;--rust:#9A3A1C;--bg-warn:#FBF3E0;--bg-info:#E8F0EE;--bg-danger:#F7E9E2;}
@@ -205,10 +206,21 @@ BODY = """</head><body><div class="wrap">
  <p class="lead"><span class="drop">C</span>opri la colonna d'acqua; le scelte di esca/colore qui sotto sono solo quelle <b>verificate</b>.</p>
  <ul>
   <li><b>Colore esca [VERIFICATO, R4]:</b> sulle canne profonde preferisci <b>blu/verde/glow</b> (il rosso/arancio svanisce ~5 m); in acqua torbida conta il <b>contrasto</b>. In acqua limpida non esiste una regola di colore verificata.</li>
-  <li><b>Spread 7 canne:</b> flat / rigger / shotgun + <b>1&ndash;2 canne profonde</b> (divergenti di profondita') per battere la colonna nel blu.</li>
   <li><b>Tecnica:</b> <b>stop-and-go sulla scarpata</b>, velocita' 6,2&ndash;7,2 kn, zigzag sui due lati dell'orlo.</li>
   <li><b>Piano orario:</b> cala spread ~08:30 &rarr; massima concentrazione nella <b>finestra</b> &rarr; segui le ferrate radio &rarr; ultima passata ~14:30.</li>
  </ul>
+ <div class="call info"><span class="lab">Specie per quota (dove sono aguglia imperiale e tonno striato)</span>Stessa acqua-blu profonda, cambia la <b>quota</b>, non lo spot. <b>SUPERFICIE</b> (flat/rigger/shotgun): <b>aguglia imperiale, tonno striato</b>, alletterato, lampuga, alalunga (600 cad.) &mdash; occhio agli <b>uccelli/mangianze</b> (lo striato fa frenesie). <b>PROFONDO</b> (divergenti): tonno rosso (1200), spada (600); alalunga anche sul fondo.</div>
+ <h3 style="font-family:var(--sans);font-size:1rem;margin:1.4rem 0 .5rem">Assetto 7 canne (multi-specie)</h3>
+ <table>
+  <tr><th>Canna</th><th>Posizione</th><th>Esca</th><th>Specie coperte</th></tr>
+  <tr><td>2&times; flat</td><td>poppa 12&ndash;18 m</td><td>minnow Rapala ~13 cm [R7]</td><td>alalunga, aguglia imp., tunnidi</td></tr>
+  <tr><td>2&times; rigger</td><td>outrigger 18&ndash;25 m</td><td><b>octopus/kona</b> piccolo-medio</td><td>aguglia imp., striato, lampuga, alalunga</td></tr>
+  <tr><td>1&times; shotgun</td><td>centro lungo 30&ndash;40 m</td><td>piumetta o kona</td><td>tonno striato, alalunga, alletterato</td></tr>
+  <tr><td>2&times; profonda</td><td>divergenti profondita' 20&ndash;60 m</td><td>piumetta piombata [R7] / kona grande, <b>blu/verde/glow</b> [R4]</td><td>tonno rosso (1200), spada, alalunga prof.</td></tr>
+  <tr><td>+ teaser</td><td>dietro la barca (NO amo, ammesso)</td><td>daisy-chain / spreader-bar</td><td>attira i branchi (striato/alalunga)</td></tr>
+ </table>
+ <p><b>Esche MULTI-SPECIE</b> (un solo tipo copre piu' prede, da privilegiare): <b>octopus/kona piccolo-medio</b>, <b>piumetta</b>, <b>minnow</b>.</p>
+ __FIG_ESCHE__
  <div class="call danger"><span class="lab">Esca non verificata</span>Il "minnow ~5 cm sotto la superficie + bianco/viola" del 21/6 e' un <b>ANEDDOTO riferito da terzi</b> (Aldo/Silvio), <b>non verificato</b>: spunto, NON una regola da assumere.</div>
  <div class="call"><span class="lab">Punteggio operativo</span>Tonno rosso 1200 (&times;2), il resto 600. <b>Cala presto</b> (spareggio). Aggancia <b>taglia valida</b> (tonno &ge;80, aguglia &ge;130).</div>
 </section>
@@ -238,7 +250,8 @@ body = (BODY
   .replace("__FIG_ROTTE__", fig(IM_ROTTE, "Le 3 rotte sulla batimetria del campo: A (scarpata, rosso), B (banco/dorsali, magenta), C (transetto, verde)."))
   .replace("__FIG_RA__", fig(IM_RA, "Rotta A in dettaglio: la scarpata, dai 593 m (A1) ai 904 m (A5)."))
   .replace("__FIG_RB__", fig(IM_RB, "Rotta B in dettaglio: banco -687 m e dorsali W (~700 m)."))
-  .replace("__FIG_RC__", fig(IM_RC, "Rotta C in dettaglio: transetto scarpata->banco (C4 = transito sulla fossa).")))
+  .replace("__FIG_RC__", fig(IM_RC, "Rotta C in dettaglio: transetto scarpata->banco (C4 = transito sulla fossa)."))
+  .replace("__FIG_ESCHE__", fig(IM_ESCHE, "Le esche dell'assetto multi-specie (schemi tecnici, non foto di prodotto): minnow, octopus/kona, piumetta, teaser.")))
 
 html = HEAD + CSS + body
 open(os.path.join(REPO,"dossier.html"),"w",encoding="utf-8").write(html)
