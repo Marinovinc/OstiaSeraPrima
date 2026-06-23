@@ -159,6 +159,9 @@ BODY = """</head><body><div class="wrap">
   <tr><td>A3</td><td class="num">N 41 38.598'</td><td class="num">E 011 57.006'</td><td>788 m</td></tr>
   <tr><td>A4</td><td class="num">N 41 38.100'</td><td class="num">E 011 56.508'</td><td>829 m</td></tr>
   <tr><td>A5</td><td class="num">N 41 36.726'</td><td class="num">E 011 55.128'</td><td>904 m</td></tr></table>
+ <div class="call info"><span class="lab">Tempi &middot; Ven 26 (cala spread 08:55, traina 6,7 kn)</span>
+  <span class="num">A1 08:55 &rarr; A2 09:04 &rarr; A3 09:12 &rarr; A4 09:18 &rarr; A5 09:33</span>. Tratti: A1-A2 1,0 nm/9' &middot; A2-A3 0,9 nm/8' &middot; A3-A4 0,6 nm/6' &middot; A4-A5 1,7 nm/15'. Percorso completo ~40'.
+  <b>Sul tratto migliore A2-A4 fai passate ripetute per tutta la finestra 09:15-11:15.</b> &mdash; Sab 27: +45' (cala 09:40, finestra 10:00-12:00).</div>
  __FIG_RA__
 
  <div class="sec-head" style="margin-top:26px;border-bottom-width:1px"><span class="sec-num" style="font-size:1.15rem">B</span><h2 style="font-size:1.2rem">Banco &minus;687 m + dorsali W</h2></div>
@@ -174,6 +177,9 @@ BODY = """</head><body><div class="wrap">
   <tr><td>B3</td><td class="num">N 41 35.520'</td><td class="num">E 011 50.160'</td><td>705 m</td></tr>
   <tr><td>B4</td><td class="num">N 41 37.020'</td><td class="num">E 011 50.280'</td><td>700 m</td></tr>
   <tr><td>B5</td><td class="num">N 41 38.220'</td><td class="num">E 011 49.800'</td><td>700 m</td></tr></table>
+ <div class="call info"><span class="lab">Tempi &middot; Ven 26 (cala spread 08:55, traina 6,7 kn)</span>
+  <span class="num">B1 08:55 &rarr; B2 09:06 &rarr; B3 09:23 &rarr; B4 09:36 &rarr; B5 09:47</span>. Tratti: B1-B2 1,3 nm/12' &middot; B2-B3 1,9 nm/17' &middot; B3-B4 1,5 nm/13' &middot; B4-B5 1,3 nm/11'. Percorso ~53'.
+  <b>Lavora gli orli B2-B5 nella finestra.</b> &mdash; Sab 27: +45'.</div>
  __FIG_RB__
 
  <div class="sec-head" style="margin-top:26px;border-bottom-width:1px"><span class="sec-num" style="font-size:1.15rem">C</span><h2 style="font-size:1.2rem">Transetto ampio</h2></div>
@@ -189,6 +195,9 @@ BODY = """</head><body><div class="wrap">
   <tr><td>C3</td><td class="num">N 41 37.200'</td><td class="num">E 011 54.300'</td><td>931 m</td></tr>
   <tr><td>C4</td><td class="num">N 41 35.400'</td><td class="num">E 011 52.320'</td><td>1063 m (transito)</td></tr>
   <tr><td>C5</td><td class="num">N 41 33.852'</td><td class="num">E 011 51.240'</td><td>687 m (banco)</td></tr></table>
+ <div class="call info"><span class="lab">Tempi &middot; Ven 26 (cala spread 08:55; transito C2&rarr;C5 a 18 kn sulla fossa)</span>
+  <span class="num">C1 08:55 &rarr; C2 09:12</span> (scarpata, 2,0 nm/18') &rarr; [transito] C3 09:20 &rarr; C4 09:28 &rarr; <span class="num">C5 09:34</span> (banco).
+  <b>Pesca la scarpata C1-C2 nella finestra, poi transita al banco C5.</b> &mdash; Sab 27: +45'.</div>
  __FIG_RC__
 </section>
 
