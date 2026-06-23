@@ -108,43 +108,91 @@ def run():
         dyn+=f"<p><b>Banda fredda (upwelling):</b> {coolest[0]:.2f} °C @ {coolest[1][0]:.3f}/{coolest[1][1]:.3f} (anomalia {an:+.2f} °C)</p>"
     if cur: dyn+=f"<p><b>Corrente zona:</b> {cur[0]:.2f} kn → {cur[1]:.0f}°</p>"
     if coolest[1]:
-        dyn+=(f"<div class='hot'><b>AREA RITARATA:</b> lavora la scarpata (Rotta A) verso la banda fredda "
-              f"@ ~{coolest[1][0]:.3f}/{coolest[1][1]:.3f} nelle finestre. Conferma la macchia fredda col sensore di bordo.</div>")
-    if err: dyn+=f"<p style='color:#e88'>Nota: alcuni dati non recuperati ({err}).</p>"
+        dyn+=(f'<div class="call info"><span class="lab">Area ritarata</span>Lavora la scarpata (Rotta A) verso la banda fredda '
+              f'@ ~{coolest[1][0]:.3f}/{coolest[1][1]:.3f} nelle finestre. <b>Conferma la macchia fredda col sensore di bordo.</b></div>')
+    if err: dyn+=f'<div class="call danger"><span class="lab">Nota</span>Alcuni dati non recuperati ({err}).</div>'
     rows="".join(f"<tr><td>{n}</td><td>{la}</td><td>{lo}</td><td>{d}</td></tr>" for n,la,lo,d in ROUTE_A)
     img=f"<img src='data:image/png;base64,{png_b64}'>" if png_b64 else "<p>(mappa non disponibile)</p>"
 
-    html=f"""<!doctype html><html lang=it><head><meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<title>Ostia 2026 — Sera prima</title><style>
-body{{margin:0;background:#0b1626;color:#e3ecf7;font-family:system-ui,Arial;line-height:1.45}}
-.wrap{{max-width:760px;margin:0 auto;padding:14px}}
-h1{{font-size:20px;margin:6px 0}} h2{{font-size:16px;color:#7fd1ff;border-bottom:1px solid #24405e;padding-bottom:4px;margin-top:22px}}
-.win{{background:#13314a;border-radius:10px;padding:10px 12px;margin:8px 0;font-size:18px;font-weight:700}}
-.hot{{background:#5a1d1d;border-radius:8px;padding:8px 10px;margin:8px 0}}
-table{{width:100%;border-collapse:collapse;font-size:13px}} td,th{{border:1px solid #24405e;padding:4px 6px;text-align:left}}
-img{{max-width:100%;height:auto;border-radius:8px;background:#fff;margin-top:8px}}
-small{{color:#9fb3cc}}</style></head><body><div class=wrap>
-<h1>🎣 Ostia 2026 — Report sera-prima</h1>
-<small>Aggiornato: {stamp} · dato Copernicus del <b>{date}</b> · auto-pubblicato</small>
-
-<h2>Finestre d'oro (essere sullo spot)</h2>
-<div class=win>Ven 26: <b>09:15–11:15</b></div>
-<div class=win>Sab 27: <b>10:00–12:00</b></div>
-
-<h2>Dato fresco del {date}</h2>
-{dyn}
-{img}
-
-<h2>Rotta A — scarpata (linea rossa, 700–900 m)</h2>
-<table><tr><th>WP</th><th>Lat</th><th>Lon</th><th>Fondale</th></tr>{rows}</table>
-<small>Tratto migliore A2–A4. WP verificati dentro il campo, validati per profondità.</small>
-
-<h2>Come</h2>
-<p><b>Esca:</b> minnow shallow-runner tarato per lavorare a <b>~5 cm sotto la superficie</b> + octopus/kona <b>bianco e viola</b> + 1–2 canne profonde (divergenti di profondità).</p>
-<p><b>Tecnica:</b> stop-and-go sulla scarpata, 6,2–7,2 kn. <b>Punteggio:</b> tonno rosso 1200 (×2), il resto 600; <b>cala presto</b> (lo spareggio premia chi ferra per primo). C&R, video, ferrata fuori campo = nulla, 370 m tra barche.</p>
-<small>SST L3 ~1 km (fallback L4). Macchia fredda da confermare col sensore di bordo. ASD IschiaFishing.</small>
+    CSS = """<style>
+:root{--paper:#F1ECDE;--paper-2:#FAF6E8;--paper-3:#ECE5D2;--ink:#181715;--ink-2:#4A4842;--ink-3:#7F7C73;--rule:#C9BFA8;--navy:#0E2A40;--navy-2:#1F4660;--sea:#2D6E5F;--brass:#9C6D14;--rust:#9A3A1C;--bg-warn:#FBF3E0;--bg-info:#E8F0EE;--bg-danger:#F7E9E2;}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:"Public Sans",sans-serif;font-size:15px;line-height:1.6}
+body{background-image:radial-gradient(rgba(120,100,70,.04) 1px,transparent 1px),radial-gradient(rgba(120,100,70,.03) 1px,transparent 1px);background-size:24px 24px,13px 13px;background-position:0 0,7px 7px}
+.wrap{max-width:920px;margin:0 auto;padding:26px 22px 60px}
+h1,h2,h3,h4{font-family:"Fraunces",serif;font-weight:500;color:var(--ink);letter-spacing:-.01em;margin:0}
+.num{font-family:"IBM Plex Mono",monospace}
+a{color:var(--navy-2)}
+.masthead{border-top:5px double var(--ink);border-bottom:1px solid var(--ink);padding:14px 0 16px;margin-bottom:8px}
+.mh-kicker{text-align:center;letter-spacing:.32em;font-size:.68rem;text-transform:uppercase;color:var(--brass);font-weight:700;margin-bottom:10px}
+.mh-title{text-align:center;font-size:3.2rem;line-height:1.02;color:var(--navy)}
+.mh-sub{text-align:center;color:var(--ink-2);font-size:1rem;margin-top:8px;font-style:italic;font-family:"Fraunces",serif}
+.dateline{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:7px 2px;margin:14px 0 0;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.toc-h{text-align:center;font-family:"Fraunces",serif;font-style:italic;font-size:1.6rem;color:var(--navy);margin:28px 0 16px}
+.toc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.toc-card{display:flex;gap:13px;align-items:flex-start;padding:13px 15px;background:var(--paper-2);border:1px solid var(--rule);border-left:4px solid var(--brass);border-radius:3px;text-decoration:none;color:inherit}
+.toc-n{font-family:"Fraunces",serif;font-style:italic;font-weight:600;font-size:1.5rem;color:var(--brass);width:26px;flex-shrink:0}
+.toc-t{font-size:.92rem;font-weight:700;color:var(--navy)} .toc-d{font-size:.76rem;color:var(--ink-3);line-height:1.3}
+section{margin:38px 0}
+.sec-head{display:flex;align-items:baseline;gap:14px;border-bottom:2px solid var(--ink);padding-bottom:8px;margin-bottom:18px}
+.sec-num{font-family:"Fraunces",serif;font-style:italic;font-weight:600;font-size:1.5rem;color:var(--brass)}
+.sec-head h2{font-size:1.5rem}
+.lead{font-size:1.05rem;color:var(--ink-2);margin:0 0 16px}
+figure{margin:20px 0;background:var(--paper-2);border:1px solid var(--rule);border-radius:4px;padding:10px}
+figure img{display:block;width:100%;height:auto;border-radius:2px}
+figcaption{font-size:.8rem;color:var(--ink-3);margin-top:8px;font-style:italic;font-family:"Fraunces",serif}
+.call{border-left:4px solid var(--brass);background:var(--bg-warn);padding:13px 16px;margin:16px 0;border-radius:0 3px 3px 0;font-size:.92rem}
+.call.info{border-color:var(--sea);background:var(--bg-info)} .call.danger{border-color:var(--rust);background:var(--bg-danger)}
+.call .lab{font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:.68rem;display:block;margin-bottom:4px;color:var(--ink-2)}
+table{width:100%;border-collapse:collapse;font-size:.84rem;margin:16px 0}
+th,td{border:1px solid var(--rule);padding:6px 9px;text-align:left;vertical-align:top}
+th{background:var(--navy);color:var(--paper-2);font-weight:600;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}
+tr:nth-child(even) td{background:var(--paper-2)}
+td.num,th.num{font-family:"IBM Plex Mono",monospace}
+.hot{color:var(--rust);font-weight:700}
+ul{margin:10px 0;padding-left:22px} li{margin:5px 0}
+.colophon{border-top:5px double var(--ink);margin-top:50px;padding-top:16px;font-size:.78rem;color:var(--ink-3);text-align:center}
+@media(max-width:760px){.toc-grid{grid-template-columns:1fr}.mh-title{font-size:2.3rem}}
+</style>"""
+    head=('<!DOCTYPE html><html lang="it"><head><meta charset="utf-8">'
+          '<meta name="viewport" content="width=device-width,initial-scale=1">'
+          '<title>Ostia 2026 - Sera prima</title>'
+          '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
+          '<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,600&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">')
+    body=f"""</head><body><div class="wrap">
+<div class="masthead">
+ <div class="mh-kicker">ASD IschiaFishing &middot; Report sera-prima</div>
+ <h1 class="mh-title">Ostia 2026</h1>
+ <div class="mh-sub">Campionato Italiano Traina d'Altura &middot; area ritarata col dato satellitare fresco</div>
+ <div class="dateline"><span>Aggiornato &middot; {stamp}</span><span>Dato &middot; Copernicus {date}</span><span>Auto &middot; pubblicato</span></div>
+</div>
+<div class="toc-h">Sommario</div>
+<div class="toc-grid">
+ <a class="toc-card" href="#s1"><span class="toc-n">I</span><span><span class="toc-t">Finestre d'oro</span><br><span class="toc-d">quando essere sullo spot</span></span></a>
+ <a class="toc-card" href="#s2"><span class="toc-n">II</span><span><span class="toc-t">Dato fresco</span><br><span class="toc-d">CHL/SST/corrente + area</span></span></a>
+ <a class="toc-card" href="#s3"><span class="toc-n">III</span><span><span class="toc-t">Rotta A</span><br><span class="toc-d">waypoint 700-900 m</span></span></a>
+ <a class="toc-card" href="#s4"><span class="toc-n">IV</span><span><span class="toc-t">Come</span><br><span class="toc-d">esca, tecnica, punteggio</span></span></a>
+</div>
+<section id="s1"><div class="sec-head"><span class="sec-num">I</span><h2>Finestre d'oro</h2></div>
+ <p class="lead">Essere sul tratto migliore (Rotta A) in questa finestra: solunare + marea in riflusso + mare ancora calmo.</p>
+ <table><tr><th>Manche</th><th>Finestra</th></tr><tr><td>Ven 26</td><td class="num hot">09:15-11:15</td></tr><tr><td>Sab 27</td><td class="num hot">10:00-12:00</td></tr></table>
+</section>
+<section id="s2"><div class="sec-head"><span class="sec-num">II</span><h2>Dato fresco del {date}</h2></div>
+ {dyn}
+ <figure>{img}<figcaption>SST del campo + banda fredda (stella ciano) + Rotta A (rosso).</figcaption></figure>
+</section>
+<section id="s3"><div class="sec-head"><span class="sec-num">III</span><h2>Rotta A - scarpata (700-900 m)</h2></div>
+ <p class="lead">Linea rossa georeferenziata e validata per profondita'. Tratto migliore <b>A2-A4</b>.</p>
+ <table><tr><th>WP</th><th>Lat</th><th>Lon</th><th>Fondale</th></tr>{rows}</table>
+</section>
+<section id="s4"><div class="sec-head"><span class="sec-num">IV</span><h2>Come</h2></div>
+ <p class="lead"><b>Esca:</b> minnow shallow-runner tarato per lavorare a <b>~5 cm sotto la superficie</b> + octopus/kona <b>bianco e viola</b> + 1-2 canne profonde (divergenti di profondita').</p>
+ <ul><li><b>Tecnica:</b> stop-and-go sulla scarpata, 6,2-7,2 kn.</li><li><b>Punteggio:</b> tonno rosso 1200 (x2), il resto 600; <b>cala presto</b> (lo spareggio premia chi ferra per primo).</li><li><b>Regole:</b> C&amp;R, video, ferrata fuori campo = nulla, 370 m tra barche.</li></ul>
+ <div class="call danger"><span class="lab">Attenzione</span>SST L3 ~1 km (fallback L4): la macchia fredda va <b>confermata col sensore di bordo</b>.</div>
+</section>
+<div class="colophon">Report sera-prima Ostia 2026 &middot; ASD IschiaFishing<br>Copernicus CMEMS &middot; EMODnet &middot; auto-aggiornato &middot; dato {date}</div>
 </div></body></html>"""
+    html = head + CSS + body
     open(os.path.join(REPO,"index.html"),"w",encoding="utf-8").write(html)
     open(os.path.join(REPO,f"report_{date}.html"),"w",encoding="utf-8").write(html)
 
