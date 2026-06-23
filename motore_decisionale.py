@@ -48,30 +48,32 @@ RIFERIMENTI = [
  #   proveniente da snippet di ricerca di alassionews.it, NON letto direttamente -> trattare come indicativo.
 ]
 
-def deriva_strategia(chl_med, sst_min, sst_max, cool_anom_C, cur_kn, cloud_pct, ora_finestra="mattino"):
+def deriva_strategia(chl_med, front_grad_km, cool_anom_C, cur_kn, cloud_pct, ora_finestra="mattino", sst_med=None):
     """Ritorna la strategia DERIVATA dalle condizioni. Tutti gli input dal dato fresco del giorno.
-       chl_med mg/m3 (limpidezza); sst_min/max gradiente; cool_anom_C anomalia banda fredda;
-       cur_kn corrente; cloud_pct nuvolosita'; ora_finestra mattino/mezzogiorno."""
+       chl_med mg/m3 (limpidezza); front_grad_km = GRADIENTE LOCALE di SST in C/km (fronte vero, NON il range
+       max-min di campo, che era degenere); cool_anom_C anomalia banda fredda; cur_kn corrente;
+       cloud_pct nuvolosita'; sst_med SST mediana (per nota termoclino)."""
     S = {}
 
     # --- DOVE: forza dei driver del giorno (non assume la scarpata del 21/6) ---
-    # ATTENZIONE: le soglie qui sotto (gradiente SST 0.3/0.6 C; anomalia -0.10/-0.20 C) sono
-    # valori INIZIALI ARBITRARI, NON validati su dati. Vanno ritarati. Non sono "verita'".
-    grad = (sst_max - sst_min) if (sst_min is not None and sst_max is not None) else 0.0
-    driver = []
-    if cool_anom_C is not None and cool_anom_C <= -0.20: driver.append(("indicatore hotspot: banda fredda", "forte"))
-    elif cool_anom_C is not None and cool_anom_C <= -0.10: driver.append(("indicatore hotspot: banda fredda", "debole"))
-    if grad >= 0.6: driver.append(("fronte termico", "forte"))
-    elif grad >= 0.3: driver.append(("fronte termico", "debole"))
-    if not driver:
-        S["dove"] = ("Nessun fronte/upwelling marcato: il driver dominante resta la STRUTTURA "
-                     "(scarpata 700-900 m + banco/dorsali). Lavora le rotte sulla struttura.")
-        S["dove_tag"] = "struttura"
-    else:
-        d = ", ".join(f"{n} ({f})" for n,f in driver)
-        S["dove"] = (f"Driver attivi: {d}. L'area MIGLIORE e' dove questi coincidono con la struttura "
-                     f"(scarpata/secche), NON necessariamente il punto del 21/6: segui la macchia fredda / il bordo del fronte.")
+    # SOGLIE: gradiente LOCALE di SST (C/km) e anomalia (C). Tarate cosi':
+    #   lato DEBOLE ancorato al 21/6 (anomalia -0.12 C, gradiente 0.14 C/km = giornata debole, fish su struttura).
+    #   lato FORTE = STIMA NON VALIDATA (manca un giorno 'forte' di calibrazione) -> da ritarare con altri giorni.
+    g = front_grad_km if front_grad_km is not None else 0.0
+    a = cool_anom_C if cool_anom_C is not None else 0.0
+    forte  = (a <= -0.25) or (g >= 0.30)   # [STIMA non validata]
+    debole = (a <= -0.12) or (g >= 0.14)   # [ancorato al 21/6]
+    if forte:
         S["dove_tag"] = "fronte+struttura"
+        S["dove"] = ("Segnale FORTE (banda fredda/fronte marcato): l'area migliore e' dove il fronte/macchia fredda "
+                     "COINCIDE con la struttura. Segui il bordo del fronte, NON il punto del 21/6.")
+    elif debole:
+        S["dove_tag"] = "struttura+debole"
+        S["dove"] = ("Segnali DEBOLI (come il 21/6): driver dominante = STRUTTURA (scarpata 700-900 m + banco/dorsali); "
+                     "il debole indizio di banda fredda/fronte va CONFERMATO col sensore di bordo, non e' decisivo.")
+    else:
+        S["dove_tag"] = "struttura"
+        S["dove"] = "Nessun segnale termico apprezzabile: lavora la STRUTTURA (scarpata + banco/dorsali) nelle finestre."
 
     # --- QUOTA: da luce/ora/temperatura (Ref: penetrazione luce, comportamento foraggio) ---
     if ora_finestra == "mattino" and cur_kn is not None:
@@ -81,7 +83,7 @@ def deriva_strategia(chl_med, sst_min, sst_max, cool_anom_C, cur_kn, cloud_pct, 
     else:
         S["quota"] = ("Sole alto / acqua calda: foraggio e predatori scendono -> privilegia le "
                       "canne PROFONDE (divergenti, 20-60 m) oltre allo spread di superficie.")
-    if (sst_max or 0) >= 26:
+    if (sst_med or 0) >= 26:
         S["quota"] += " SST elevata (>=26 C): probabile termoclino marcato, i grossi stanno sotto."
 
     # --- COLORE: da limpidezza (CHL) + luce (Ref: lure color vs clarity/light) ---
@@ -108,5 +110,7 @@ def deriva_strategia(chl_med, sst_min, sst_max, cool_anom_C, cur_kn, cloud_pct, 
 
 if __name__ == "__main__":
     # esempio: condizioni del 21/6 -> deve riprodurre 'superficie + bianco/viola'
-    s = deriva_strategia(chl_med=0.05, sst_min=25.7, sst_max=26.0, cool_anom_C=-0.15, cur_kn=0.24, cloud_pct=0, ora_finestra="mattino")
+    # condizioni REALI del 21/6: anomalia -0.12 C, gradiente locale 0.14 C/km -> deve dare 'struttura+debole'
+    s = deriva_strategia(chl_med=0.05, front_grad_km=0.14, cool_anom_C=-0.12, cur_kn=0.24, cloud_pct=0, ora_finestra="mattino", sst_med=25.6)
+    print("dove_tag:", s["dove_tag"])
     for k in ("dove","quota","colore","specie"): print(k.upper()+":", s[k], "\n")

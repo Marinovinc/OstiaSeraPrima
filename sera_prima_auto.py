@@ -118,10 +118,17 @@ def run():
     # --- MOTORE: strategia DERIVATA dal dato di oggi (non copia il 21/6) ---
     strat_html=""
     try:
-        _sv=[v-273.15 for v in sst.values() if v]
+        # gradiente LOCALE di SST (C/km) tra punti adiacenti (~3 km): fronte vero, non range di campo
+        pts=[(p[0],p[1],v-273.15) for p,v in sst.items() if v]; _grad=0.0
+        for _i in range(len(pts)):
+            for _j in range(_i+1,len(pts)):
+                la1,lo1,t1=pts[_i]; la2,lo2,t2=pts[_j]
+                _d=(((la2-la1)*111.32)**2+((lo2-lo1)*111.32*math.cos(math.radians((la1+la2)/2)))**2)**0.5
+                if 0<_d<=3.5:
+                    _g=abs(t1-t2)/_d
+                    if _g>_grad: _grad=_g
         _anom=(coolest[0]-sst_med) if (coolest[0] is not None and sst_med is not None) else None
-        strat=deriva_strategia(chl_med, (min(_sv) if _sv else None), (max(_sv) if _sv else None),
-                               _anom, (cur[0] if cur else None), None, "mattino")
+        strat=deriva_strategia(chl_med, _grad, _anom, (cur[0] if cur else None), None, "mattino", sst_med)
         strat_html=("".join(f'<p><b>{k}:</b> {strat[k.lower()]}</p>' for k in ("DOVE","QUOTA","COLORE","SPECIE")))
         refs="".join(f'<li><a href="{u}">{t}</a></li>' for t,u in RIFERIMENTI)
         strat_html+=f'<div class="call"><span class="lab">Riferimenti verificati</span><ul>{refs}</ul></div>'
