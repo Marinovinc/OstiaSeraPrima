@@ -14,6 +14,9 @@ def img64(name):
 IM_ROTTE  = img64("ROTTE_OSTIA_2026_mappa.png")
 IM_HEAT   = img64("TATTICA_26-27_2D.png")
 IM_PROF   = img64("PROFILO_3D_zona_21-06.png")
+IM_RA     = img64("ROTTA_A_mappa.png")
+IM_RB     = img64("ROTTA_B_mappa.png")
+IM_RC     = img64("ROTTA_C_mappa.png")
 
 CSS = """<style>
 :root{--paper:#F1ECDE;--paper-2:#FAF6E8;--paper-3:#ECE5D2;--ink:#181715;--ink-2:#4A4842;--ink-3:#7F7C73;--rule:#C9BFA8;--navy:#0E2A40;--navy-2:#1F4660;--sea:#2D6E5F;--brass:#9C6D14;--rust:#9A3A1C;--bg-warn:#FBF3E0;--bg-info:#E8F0EE;--bg-danger:#F7E9E2;}
@@ -156,6 +159,7 @@ BODY = """</head><body><div class="wrap">
   <tr><td>A3</td><td class="num">N 41 38.598'</td><td class="num">E 011 57.006'</td><td>788 m</td></tr>
   <tr><td>A4</td><td class="num">N 41 38.100'</td><td class="num">E 011 56.508'</td><td>829 m</td></tr>
   <tr><td>A5</td><td class="num">N 41 36.726'</td><td class="num">E 011 55.128'</td><td>904 m</td></tr></table>
+ __FIG_RA__
 
  <div class="sec-head" style="margin-top:26px;border-bottom-width:1px"><span class="sec-num" style="font-size:1.15rem">B</span><h2 style="font-size:1.2rem">Banco &minus;687 m + dorsali W</h2></div>
  <p>Le <b>vere strutture</b> del settore W del campo (banco e dorsali a ~700 m): per <b>aggregazione</b> [R1, Weber 2025] concentrano i predatori. Si lavorano gli <b>orli</b> di banco e dorsali.</p>
@@ -170,6 +174,7 @@ BODY = """</head><body><div class="wrap">
   <tr><td>B3</td><td class="num">N 41 35.520'</td><td class="num">E 011 50.160'</td><td>705 m</td></tr>
   <tr><td>B4</td><td class="num">N 41 37.020'</td><td class="num">E 011 50.280'</td><td>700 m</td></tr>
   <tr><td>B5</td><td class="num">N 41 38.220'</td><td class="num">E 011 49.800'</td><td>700 m</td></tr></table>
+ __FIG_RB__
 
  <div class="sec-head" style="margin-top:26px;border-bottom-width:1px"><span class="sec-num" style="font-size:1.15rem">C</span><h2 style="font-size:1.2rem">Transetto ampio</h2></div>
  <p>Copre <b>scarpata (NE) e banco (SW)</b> in un transetto diagonale: per la barca che vuole <b>leggere tutto il campo</b> in una passata.</p>
@@ -184,6 +189,7 @@ BODY = """</head><body><div class="wrap">
   <tr><td>C3</td><td class="num">N 41 37.200'</td><td class="num">E 011 54.300'</td><td>931 m</td></tr>
   <tr><td>C4</td><td class="num">N 41 35.400'</td><td class="num">E 011 52.320'</td><td>1063 m (transito)</td></tr>
   <tr><td>C5</td><td class="num">N 41 33.852'</td><td class="num">E 011 51.240'</td><td>687 m (banco)</td></tr></table>
+ __FIG_RC__
 </section>
 
 <section id="s6"><div class="sec-head"><span class="sec-num">VI</span><h2>Come: spread & tecnica</h2></div>
@@ -220,7 +226,10 @@ def fig(b64, cap):
 body = (BODY
   .replace("__FIG_PROF__",  fig(IM_PROF,  "Profilo 2D+3D della scarpata del 21/6 (EMODnet DTM): si pesca sul pendio, non su una secca."))
   .replace("__FIG_HEAT__",  fig(IM_HEAT,  "Heatmap di probabilita' (rosso = scarpata 700-900 m) con marker zona 21/6 e secche W."))
-  .replace("__FIG_ROTTE__", fig(IM_ROTTE, "Le 3 rotte sulla batimetria del campo: A (scarpata, rosso), B (banco/dorsali, magenta), C (transetto, verde).")))
+  .replace("__FIG_ROTTE__", fig(IM_ROTTE, "Le 3 rotte sulla batimetria del campo: A (scarpata, rosso), B (banco/dorsali, magenta), C (transetto, verde)."))
+  .replace("__FIG_RA__", fig(IM_RA, "Rotta A in dettaglio: la scarpata, dai 593 m (A1) ai 904 m (A5)."))
+  .replace("__FIG_RB__", fig(IM_RB, "Rotta B in dettaglio: banco -687 m e dorsali W (~700 m)."))
+  .replace("__FIG_RC__", fig(IM_RC, "Rotta C in dettaglio: transetto scarpata->banco (C4 = transito sulla fossa).")))
 
 html = HEAD + CSS + body
 open(os.path.join(REPO,"dossier.html"),"w",encoding="utf-8").write(html)
