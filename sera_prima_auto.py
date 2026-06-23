@@ -8,6 +8,7 @@ URL fisso: https://marinovinc.github.io/OstiaSeraPrima/
 import sys, os, datetime, urllib.request, io, math, re, time, base64, subprocess
 import numpy as np, tifffile
 import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
+from motore_decisionale import deriva_strategia, RIFERIMENTI  # motore: deriva la strategia dal dato, non copia il 21/6
 
 REPO = os.path.dirname(os.path.abspath(__file__))
 WMTS = "https://wmts.marine.copernicus.eu/teroWmts"
@@ -114,6 +115,19 @@ def run():
     rows="".join(f"<tr><td>{n}</td><td>{la}</td><td>{lo}</td><td>{d}</td></tr>" for n,la,lo,d in ROUTE_A)
     img=f"<img src='data:image/png;base64,{png_b64}'>" if png_b64 else "<p>(mappa non disponibile)</p>"
 
+    # --- MOTORE: strategia DERIVATA dal dato di oggi (non copia il 21/6) ---
+    strat_html=""
+    try:
+        _sv=[v-273.15 for v in sst.values() if v]
+        _anom=(coolest[0]-sst_med) if (coolest[0] is not None and sst_med is not None) else None
+        strat=deriva_strategia(chl_med, (min(_sv) if _sv else None), (max(_sv) if _sv else None),
+                               _anom, (cur[0] if cur else None), None, "mattino")
+        strat_html=("".join(f'<p><b>{k}:</b> {strat[k.lower()]}</p>' for k in ("DOVE","QUOTA","COLORE","SPECIE")))
+        refs="".join(f'<li><a href="{u}">{t}</a></li>' for t,u in RIFERIMENTI)
+        strat_html+=f'<div class="call"><span class="lab">Riferimenti verificati</span><ul>{refs}</ul></div>'
+    except Exception as e:
+        strat_html=f'<div class="call danger"><span class="lab">Motore</span>Strategia non derivata ({str(e)[:80]}).</div>'
+
     CSS = """<style>
 :root{--paper:#F1ECDE;--paper-2:#FAF6E8;--paper-3:#ECE5D2;--ink:#181715;--ink-2:#4A4842;--ink-3:#7F7C73;--rule:#C9BFA8;--navy:#0E2A40;--navy-2:#1F4660;--sea:#2D6E5F;--brass:#9C6D14;--rust:#9A3A1C;--bg-warn:#FBF3E0;--bg-info:#E8F0EE;--bg-danger:#F7E9E2;}
 *{box-sizing:border-box}
@@ -186,10 +200,11 @@ ul{margin:10px 0;padding-left:22px} li{margin:5px 0}
  <p class="lead">Linea rossa georeferenziata e validata per profondita'. Tratto migliore <b>A2-A4</b>.</p>
  <table><tr><th>WP</th><th>Lat</th><th>Lon</th><th>Fondale</th></tr>{rows}</table>
 </section>
-<section id="s4"><div class="sec-head"><span class="sec-num">IV</span><h2>Come</h2></div>
- <p class="lead"><b>Esca:</b> minnow shallow-runner tarato per lavorare a <b>~5 cm sotto la superficie</b> + octopus/kona <b>bianco e viola</b> + 1-2 canne profonde (divergenti di profondita').</p>
+<section id="s4"><div class="sec-head"><span class="sec-num">IV</span><h2>Strategia derivata dal dato (non copia il 21/6)</h2></div>
+ <p class="lead">Il motore deriva la strategia dalle condizioni di oggi, su basi <b>verificate</b>; le esche/colori NON verificati restano spunti, non regole.</p>
+ {strat_html}
  <ul><li><b>Tecnica:</b> stop-and-go sulla scarpata, 6,2-7,2 kn.</li><li><b>Punteggio:</b> tonno rosso 1200 (x2), il resto 600; <b>cala presto</b> (lo spareggio premia chi ferra per primo).</li><li><b>Regole:</b> C&amp;R, video, ferrata fuori campo = nulla, 370 m tra barche.</li></ul>
- <div class="call danger"><span class="lab">Attenzione</span>SST L3 ~1 km (fallback L4): la macchia fredda va <b>confermata col sensore di bordo</b>.</div>
+ <div class="call danger"><span class="lab">Attenzione</span>SST L3 ~1 km (fallback L4): la macchia fredda va <b>confermata col sensore di bordo</b>. Le soglie del motore sono iniziali, non validate.</div>
 </section>
 <div class="colophon">Report sera-prima Ostia 2026 &middot; ASD IschiaFishing<br>Copernicus CMEMS &middot; EMODnet &middot; auto-aggiornato &middot; dato {date}</div>
 </div></body></html>"""
