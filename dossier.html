@@ -29,6 +29,11 @@ figcaption{font-size:.8rem;color:var(--ink-3);margin-top:8px;font-style:italic;f
 .call{border-left:4px solid var(--brass);background:var(--bg-warn);padding:13px 16px;margin:16px 0;border-radius:0 3px 3px 0;font-size:.92rem}
 .call.info{border-color:var(--sea);background:var(--bg-info)} .call.danger{border-color:var(--rust);background:var(--bg-danger)}
 .call .lab{font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:.68rem;display:block;margin-bottom:4px;color:var(--ink-2)}
+/* callout a scomparsa (guide/legende collassabili) */
+.call>.lab{cursor:pointer;position:relative;padding-left:15px;-webkit-user-select:none;user-select:none}
+.call>.lab::before{content:"B8";position:absolute;left:0;color:var(--brass);transition:transform .15s}
+.call:not(.collapsed)>.lab::before{transform:rotate(90deg)}
+.call.collapsed .call-body{display:none}
 table{width:100%;border-collapse:collapse;font-size:.84rem;margin:16px 0}
 th,td{border:1px solid var(--rule);padding:6px 9px;text-align:left;vertical-align:top}
 th{background:var(--navy);color:var(--paper-2);font-weight:600;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}
@@ -210,4 +215,14 @@ ul{margin:10px 0;padding-left:22px} li{margin:5px 0}
  Dossier tattico Ostia 2026 &middot; ASD IschiaFishing<br>
  Fonti: Regolamento FIPSAS, Ordinanza Capitaneria di Roma, Copernicus CMEMS, EMODnet DTM 2024, Open-Meteo, tides4fishing &middot; tutti i dati verificati o dichiarati
 </div>
-</div></body></html>
+</div>
+<script>
+document.querySelectorAll('.call').forEach(function(c){
+ var lab=c.querySelector('.lab'); if(!lab) return;
+ var body=document.createElement('div'); body.className='call-body';
+ while(lab.nextSibling){ body.appendChild(lab.nextSibling); }
+ c.appendChild(body); c.classList.add('collapsed');
+ lab.addEventListener('click',function(){ c.classList.toggle('collapsed'); });
+});
+</script>
+</body></html>
