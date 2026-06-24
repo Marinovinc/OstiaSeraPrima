@@ -138,3 +138,34 @@ Pattern: ho lavorato bene quando ho **riprodotto e verificato** prima di conclud
 **Cartella Roma_pesca (lavoro):** `Fronte_Tevere_SQUADRA.html` (base, corretto), `Briefing_tattico_Roma_2026.html` (campo + immagine), `DOCUMENTAZIONE_TECNICA_roma2026_20260602.md`, `INDICE.md`, `README_SQUADRA.md`, `MANUALE_*`, `esche_proposte.png`, `esche_foto/` (foto reali + manifest), `DOSSIER_OSTIA_2026_autonomo.html`, `REPORT_sera_prima_autonomo.html`.
 
 **Altro:** `D:\Dev\IschiaFishing\gara_plan.js` ("prime tonni" corretto).
+
+---
+
+## 8. AGGIORNAMENTO SESSIONE 2026-06-24 (pomeriggio) — piumetta foto reale, .nojekyll, assetto canne
+
+Tre interventi su due repo, tutti pubblicati e verificati nel live.
+
+### 8.1 Piumetta come FOTO REALE nel dossier (repo OstiaSeraPrima)
+- Sostituito lo **schema** piumetta (quadrante 3 di `esche_proposte.png`) con una **foto-prodotto reale**: **Williamson Flash Feather** blu/bianco (scaricata da nootica.com). Teaser **resta schema** daisy-chain (scelta utente: l'Exciter Bird trovato e' un "bird teaser", non una daisy-chain).
+- File: `disegna_esche.py` (costante `PIUMETTA_FOTO`, quadrante 3 da schema a `imshow`, titolo "3 foto reali + 1 schema", crediti); `build_dossier.py` (caption figura esche). Foto in `esche_foto/piumetta_prod.jpg`; provenienza/licenza in `esche_foto/manifest_prodotto.json` (incl. `teaser_prod.jpg` scaricato ma NON usato).
+- **Copyright:** foto-prodotto (c) Williamson/Rapala su repo PUBBLICO, uso non commerciale squadra, con credito. **Da sostituire con foto reale dell'utente** quando disponibile (piano "1": lasciare il file, rigenerare con `build_dossier.py`).
+- Commit `647e9d5` (dossier) + `869fcd1` (disegna_esche). Live verificato con screenshot WebKit (`dossier_live_webkit_esche.png`).
+
+### 8.2 Fix build GitHub Pages: aggiunto `.nojekyll` (repo OstiaSeraPrima)
+- **Problema scoperto:** dal commit `647e9d5` il **build Pages falliva** ("Page build failed") → il deploy del dossier aggiornato era bloccato (live fermo all'ultimo build OK). Causa: GitHub Pages processava con **Jekyll** un sito di HTML statici autoportanti.
+- **Fix:** aggiunto file vuoto **`.nojekyll`** in root (commit `805f468`) → Pages serve i file as-is, build tornato `built`. Protegge anche index/mobile/ipad/report futuri.
+- **Lezione:** per i repo di HTML statici pubblicati su Pages, mettere SEMPRE `.nojekyll`. NB: il repo **GaraOstia2026 NON ha .nojekyll** ma i suoi build passano lo stesso (contenuto non problematico per Jekyll) — valutare di aggiungerlo per prevenzione.
+
+### 8.3 Diagramma "Assetto 7 canne a ventaglio" nella guida di bordo (repo GaraOstia2026)
+- Aggiunto alla sezione **"VI · Tecnica di traina"** di `GUIDA_RAPIDA_BARCA.html` un **diagramma SVG a ventaglio** (vista dall'alto: prua/poppa/T-TOP, divergenti dx/sx, canne C1->C7 con distanze + legenda), nello stile dei briefing tattici Forio (`Briefing_tattico_Forio_2026_*.html`, sez. "Assetto: le 7 canne"). Inserito sopra la tabella "Assetto multi-specie" gia' presente.
+- **Distanze/esche dalla tabella Ostia esistente** (non inventate): C1/C7 flat 15-25 m, C2/C6 outrigger corto ~40 m, C3/C5 outrigger lungo ~60 m, C4 shotgun ~90 m. Geometria del ventaglio ripresa da Forio.
+- **Errore corretto in corsa:** la prima versione copiava i colori Forio (C2/C3/C5/C6 = "skirted"), incoerente con la tabella Ostia che li' mette **minnow a paletta Halco**. Allineato: verde = minnow paletta Halco (C2/C3/C5/C6), ocra = flat piombate cedar/polpetto (C1/C7), rosso = kona/skirted shotgun (C4).
+- Commit `d10ad21`. Build `built`, live verificato.
+
+### 8.4 Errori confessati di questa sessione
+1. **Assunzione sul file foto:** il file `Briefing_Forio_2026_20.html` indicato dall'utente NON conteneva foto sue, ma foto-prodotto da URL esterni (Halco/Rapala/Nootica/Williamson) + 3 mappe base64. Chiarito prima di procedere.
+2. **Incoerenza colori diagramma** (vedi 8.3): schema-colori Forio applicato senza adattarlo alla logica esche di Ostia. Trovato allo screenshot di verifica e corretto.
+3. **`rm -rf __pycache__`** ha cancellato 2 `.pyc` tracciati nel repo OstiaSeraPrima → ripristinati con `git checkout` (nessuna modifica indesiderata persistita).
+
+### 8.5 File live aggiornati (oltre ai 4 gia' noti)
+- `https://marinovinc.github.io/GaraOstia2026/GUIDA_RAPIDA_BARCA.html` (guida di bordo con diagramma assetto).
