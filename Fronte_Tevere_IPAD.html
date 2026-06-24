@@ -930,10 +930,13 @@ const OFFLINE_BASE_BOUNDS = [[41.2995,11.5995],[41.7995,12.4495]];
 let offlineBase = null;
 if (OFFLINE_BASE_URI) {
     map.createPane('offlineBase');
-    map.getPane('offlineBase').style.zIndex = 150;   // sotto le tile online (200)
+    map.getPane('offlineBase').style.zIndex = 250;   // SOPRA le tile scure (200): i fondali/batimetria restano sempre visibili
     offlineBase = L.imageOverlay(OFFLINE_BASE_URI, OFFLINE_BASE_BOUNDS, {pane:'offlineBase'}).addTo(map);
     map.fitBounds(OFFLINE_BASE_BOUNDS);               // inquadra il campo gara
 }
+// pane dedicato al layer satellitare CHL/SST: sopra la batimetria (250), sotto i vettori (overlayPane 400)
+map.createPane('chlPane');
+map.getPane('chlPane').style.zIndex = 300;
 
 // Layer control
 L.control.layers({
@@ -1123,6 +1126,7 @@ function updateLayer() {
             layers: prod.wmsLayer,
             format: 'image/png',
             transparent: true,
+            pane: 'chlPane',
             opacity: opacity,
             time: date,                 // data selezionata (param WMS TIME)
             attribution: 'NASA GIBS / PACE'
@@ -1142,6 +1146,7 @@ function updateLayer() {
     currentLayer = L.tileLayer(buildWmtsUrl(productKey, variable, date), {
         opacity: opacity,
         maxZoom: 14,
+        pane: 'chlPane',
         attribution: 'Copernicus Marine Service'
     });
     currentLayer.addTo(map);
@@ -1389,7 +1394,7 @@ async function buildLiveSst() {
     if (sstLiveOverlay) map.removeLayer(sstLiveOverlay);
     if (currentLayer) map.removeLayer(currentLayer);   // nascondi i tile gialli sottostanti
     sstLiveOverlay = L.imageOverlay(cv.toDataURL(), [[latS, lonW], [latN, lonE]], {
-        opacity: 0.8, interactive: false
+        opacity: 0.8, interactive: false, pane: 'chlPane'
     }).addTo(map);
     // hook di debug per verifica allineamento
     window._lastSstGrid = { lats: lats, lons: lons, nLat: nLat, nLon: nLon,
@@ -2124,7 +2129,7 @@ function buildFrontSlider(){
     padding: 2px 6px !important; border-radius: 3px !important;
 }
 </style>
-<script>window.__INFO_OPEN__=true;</script>
+<script>window.__INFO_OPEN__=false;window.__SCALE_OPEN__=false;</script>
 <script>
 (function(){
   var ib=document.querySelector('.info-box'),
@@ -2137,6 +2142,7 @@ function buildFrontSlider(){
     ctl.appendChild(mk('🎨 Scala', function(){ if(cs) cs.classList.toggle('collapsed'); }));
   }
   if(ib && !window.__INFO_OPEN__) ib.classList.add('collapsed');
+  if(cs && !window.__SCALE_OPEN__) cs.classList.add('collapsed');
 })();
 </script>
 </body>
