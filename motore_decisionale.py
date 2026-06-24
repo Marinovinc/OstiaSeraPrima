@@ -107,14 +107,20 @@ def deriva_strategia(chl_med, front_grad_km, cool_anom_C, cur_kn, cloud_pct, ora
                    "NB: 'minnow 5 cm + bianco/viola' del 21/6 e' un ANEDDOTO non verificato (riferito da terzi): spunto, NON regola.")
 
     # --- SPECIE / SPREAD: dalla colonna (calibrato anche su Ostia 2025) ---
-    S["specie"] = ("Copri la COLONNA. Specie target VERIFICATE per l'evento Ostia (fonte 2026): "
-                   "aguglia imperiale e lampuga [R5]. Indicative (Ostia 2025, da snippet NON letto direttamente): "
-                   "anche tonno rosso, striato, spada. Spread di superficie (aguglia/lampuga/tunnidi/alalunga, 600) "
-                   "+ 1-2 canne profonde (tonno rosso 1200, spada 600). Oggetti galleggianti/linee di alga -> LAMPUGA. "
-                   "Alalunga: acqua PROFONDA 500-2000 m, traina 6-9 kn [R6].")
+    S["specie"] = ("RIPARTIZIONE PER QUOTA (stessa acqua-blu profonda, cambia la quota, non lo spot): "
+                   "SUPERFICIE (flat/rigger/shotgun) = AGUGLIA IMPERIALE, TONNO STRIATO, alletterato, lampuga, alalunga (600 cad.) "
+                   "-> occhio agli UCCELLI/mangianze (lo striato fa frenesie). "
+                   "PROFONDO (divergenti) = tonno rosso (1200) + spada (600); alalunga anche sul fondo 500-2000 m [R6]. "
+                   "Specie target verificate dell'evento [R5]: aguglia imperiale e lampuga. Oggetti galleggianti/alga -> LAMPUGA.")
 
     S["segni"] = ("Segni REALI che battono la mappa [R7]: UCCELLI ai bordi delle mangianze + salti = branchi in caccia "
                   "sul foraggio -> molla il piano e converge (rispettando i 370 m). Il pesce che mangia batte qualsiasi soglia.")
+
+    S["assetto"] = ("ASSETTO 7 CANNE multi-specie (artificiali singolo amo non-inox). "
+                    "SUPERFICIE: 2 flat (12-18 m) minnow Rapala ~13 cm [R7]; 2 rigger (18-25 m) octopus/kona piccolo-medio (MULTI-SPECIE: aguglia/striato/lampuga/alalunga); "
+                    "1 shotgun (30-40 m) piumetta o kona; + teaser daisy-chain/spreader-bar (SENZA amo, ammessi) per attirare i branchi. "
+                    "PROFONDO: 2 canne su divergenti di profondita' (20-60 m), piumetta piombata [R7] / kona grande, colori BLU/VERDE/glow [R4] -> tonno rosso, spada, alalunga profonda. "
+                    "ESCHE MULTI-SPECIE da privilegiare: octopus/kona piccolo-medio, piumetta, minnow (coprono piu' specie con un solo tipo).")
 
     S["riferimenti"] = RIFERIMENTI
     return S

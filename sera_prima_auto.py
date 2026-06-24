@@ -129,7 +129,7 @@ def run():
                     if _g>_grad: _grad=_g
         _anom=(coolest[0]-sst_med) if (coolest[0] is not None and sst_med is not None) else None
         strat=deriva_strategia(chl_med, _grad, _anom, (cur[0] if cur else None), None, "mattino", sst_med)
-        strat_html=("".join(f'<p><b>{k}:</b> {strat[k.lower()]}</p>' for k in ("DOVE","QUOTA","COLORE","SPECIE","SEGNI")))
+        strat_html=("".join(f'<p><b>{k}:</b> {strat[k.lower()]}</p>' for k in ("DOVE","QUOTA","COLORE","SPECIE","ASSETTO","SEGNI")))
         refs="".join(f'<li><a href="{u}">{t}</a></li>' for t,u in RIFERIMENTI)
         strat_html+=f'<div class="call"><span class="lab">Riferimenti verificati</span><ul>{refs}</ul></div>'
     except Exception as e:
@@ -165,6 +165,11 @@ figcaption{font-size:.8rem;color:var(--ink-3);margin-top:8px;font-style:italic;f
 .call{border-left:4px solid var(--brass);background:var(--bg-warn);padding:13px 16px;margin:16px 0;border-radius:0 3px 3px 0;font-size:.92rem}
 .call.info{border-color:var(--sea);background:var(--bg-info)} .call.danger{border-color:var(--rust);background:var(--bg-danger)}
 .call .lab{font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:.68rem;display:block;margin-bottom:4px;color:var(--ink-2)}
+/* callout a scomparsa (guide/legende collassabili) */
+.call>.lab{cursor:pointer;position:relative;padding-left:15px;-webkit-user-select:none;user-select:none}
+.call>.lab::before{content:"";position:absolute;left:2px;top:.32em;border:5px solid transparent;border-left-color:var(--brass);transition:transform .15s}
+.call:not(.collapsed)>.lab::before{transform:rotate(90deg)}
+.call.collapsed .call-body{display:none}
 table{width:100%;border-collapse:collapse;font-size:.84rem;margin:16px 0}
 th,td{border:1px solid var(--rule);padding:6px 9px;text-align:left;vertical-align:top}
 th{background:var(--navy);color:var(--paper-2);font-weight:600;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}
@@ -214,7 +219,17 @@ ul{margin:10px 0;padding-left:22px} li{margin:5px 0}
  <div class="call danger"><span class="lab">Attenzione</span>SST L3 ~1 km (fallback L4): la macchia fredda va <b>confermata col sensore di bordo</b>. Le soglie del motore sono iniziali, non validate.</div>
 </section>
 <div class="colophon">Report sera-prima Ostia 2026 &middot; ASD IschiaFishing<br>Copernicus CMEMS &middot; EMODnet &middot; auto-aggiornato &middot; dato {date}</div>
-</div></body></html>"""
+</div>
+<script>
+document.querySelectorAll('.call').forEach(function(c){{
+ var lab=c.querySelector('.lab'); if(!lab) return;
+ var body=document.createElement('div'); body.className='call-body';
+ while(lab.nextSibling){{ body.appendChild(lab.nextSibling); }}
+ c.appendChild(body); c.classList.add('collapsed');
+ lab.addEventListener('click',function(){{ c.classList.toggle('collapsed'); }});
+}});
+</script>
+</body></html>"""
     html = head + CSS + body
     open(os.path.join(REPO,"index.html"),"w",encoding="utf-8").write(html)
     open(os.path.join(REPO,f"report_{date}.html"),"w",encoding="utf-8").write(html)
