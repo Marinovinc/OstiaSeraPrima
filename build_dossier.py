@@ -251,7 +251,7 @@ body = (BODY
   .replace("__FIG_RA__", fig(IM_RA, "Rotta A in dettaglio: la scarpata, dai 593 m (A1) ai 904 m (A5)."))
   .replace("__FIG_RB__", fig(IM_RB, "Rotta B in dettaglio: banco -687 m e dorsali W (~700 m)."))
   .replace("__FIG_RC__", fig(IM_RC, "Rotta C in dettaglio: transetto scarpata->banco (C4 = transito sulla fossa)."))
-  .replace("__FIG_ESCHE__", fig(IM_ESCHE, "Le esche dell'assetto multi-specie (schemi tecnici, non foto di prodotto): minnow, octopus/kona, piumetta, teaser.")))
+  .replace("__FIG_ESCHE__", fig(IM_ESCHE, "Le esche dell'assetto: minnow = FOTO REALE (Wikimedia Commons, CC0); octopus/kona, piumetta, teaser = schemi (nessuna foto a licenza libera). Foto reali aggiuntive in cartella esche_foto/.")))
 
 html = HEAD + CSS + body
 open(os.path.join(REPO,"dossier.html"),"w",encoding="utf-8").write(html)
