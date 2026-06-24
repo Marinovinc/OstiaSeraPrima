@@ -225,6 +225,15 @@ BODY = """</head><body><div class="wrap">
   <tr><td>+ teaser</td><td>dietro la barca (NO amo, ammesso)</td><td>daisy-chain / spreader-bar</td><td>attira i branchi (striato/alalunga)</td></tr>
  </table>
  <p><b>Esche MULTI-SPECIE</b> (un solo tipo copre piu' prede, da privilegiare): <b>octopus/kona piccolo-medio</b>, <b>piumetta</b>, <b>minnow</b>.</p>
+ <h3 style="font-family:var(--sans);font-size:1rem;margin:1.4rem 0 .5rem">Schede esca: colore &middot; taglia &middot; montaggio</h3>
+ <table>
+  <tr><th>Esca</th><th>Taglia</th><th>Colore</th><th>Montaggio</th></tr>
+  <tr><td>Minnow [R7]</td><td>~13 cm</td><td>naturale / silver / sardina</td><td>2 ancorette; flat 12&ndash;18 m, 6,2&ndash;7,2 kn</td></tr>
+  <tr><td>Kona / octopus</td><td>jupe ~15&ndash;20 cm</td><td>profondo <b>blu/verde/glow</b> [R4]; superficie naturali/scuri</td><td>1 amo singolo non-inox; rigger 18&ndash;25 m</td></tr>
+  <tr><td>Piumetta [R7]</td><td>media, <b>piombata</b></td><td>striato/scuri; chiaro su acqua limpida</td><td>piombata per scendere; shotgun 30&ndash;40 m / profondo</td></tr>
+  <tr><td>Teaser</td><td>daisy-chain / spreader-bar</td><td>misti vivaci</td><td><b>SENZA amo</b> (ammesso); canna che lavora dietro</td></tr>
+ </table>
+ <p style="font-size:.85rem;color:var(--ink-2)">Colore = regola <b>verificata</b> [R4]: in profondo blu/verde/glow (il rosso svanisce ~5 m), acqua torbida = contrasto/scuri; in acqua limpida nessuna regola di colore verificata. <b>Taglie e montaggi di kona/teaser = prassi</b> di traina d'altura (non da fonte puntuale): confermale tu con le esche che usate davvero. Lenza max <b>15 kg</b>, 7 canne, artificiali a singolo amo non-inox (regolamento).</p>
  __FIG_ESCHE__
  <div class="call danger"><span class="lab">Esca non verificata</span>Il "minnow ~5 cm sotto la superficie + bianco/viola" del 21/6 e' un <b>ANEDDOTO riferito da terzi</b> (Aldo/Silvio), <b>non verificato</b>: spunto, NON una regola da assumere.</div>
  <div class="call"><span class="lab">Punteggio operativo</span>Tonno rosso 1200 (&times;2), il resto 600. <b>Cala presto</b> (spareggio). Aggancia <b>taglia valida</b> (tonno &ge;80, aguglia &ge;130).</div>
@@ -266,7 +275,7 @@ body = (BODY
   .replace("__FIG_RA__", fig(IM_RA, "Rotta A in dettaglio: la scarpata, dai 593 m (A1) ai 904 m (A5)."))
   .replace("__FIG_RB__", fig(IM_RB, "Rotta B in dettaglio: banco -687 m e dorsali W (~700 m)."))
   .replace("__FIG_RC__", fig(IM_RC, "Rotta C in dettaglio: transetto scarpata->banco (C4 = transito sulla fossa)."))
-  .replace("__FIG_ESCHE__", fig(IM_ESCHE, "Le esche dell'assetto: minnow = FOTO REALE (Wikimedia Commons, CC0); octopus/kona, piumetta, teaser = schemi (nessuna foto a licenza libera). Foto reali aggiuntive in cartella esche_foto/.")))
+  .replace("__FIG_ESCHE__", fig(IM_ESCHE, "Esche: FOTO REALI di minnow (Wikimedia Commons, CC0) e kona/octopus (foto di Lonnie's Life, Flickr, CC BY-NC 2.0); piumetta e teaser = schemi (nessuna foto libera pulita disponibile).")))
 
 html = HEAD + CSS + body
 open(os.path.join(REPO,"dossier.html"),"w",encoding="utf-8").write(html)
